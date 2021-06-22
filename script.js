@@ -35,9 +35,9 @@ function main() {
         textOutput.innerHTML += text;
     }
 
-    function drawPixel() {
+    function setPixel(x, y, color) {
         g.fillStyle = "#FFFFFF";
-        g.fillRect(0, 0, Zoom, Zoom);
+        g.fillRect(x * Zoom, y * Zoom, Zoom, Zoom);
     }
 
     function onTextInput(event) {
@@ -104,6 +104,13 @@ function main() {
         let b = pop();
         let a = pop();
         push(a * b);
+    });
+
+    define("set-pixel", function() {
+        let color = pop();
+        let y = pop();
+        let x = pop();
+        setPixel(x, y, color);
     });
 
     textInput.addEventListener("keydown", onTextInput);
