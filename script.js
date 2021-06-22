@@ -74,7 +74,6 @@ function main() {
                         break;
                     }
                 }
-                console.log(operands);
             }
 
             // Return unused operands to the input field:
