@@ -6,6 +6,7 @@ function main() {
     const DisplayHeight = 120;
 
     let operands = [];
+    let words = new Map();
 
     let textInput = document.getElementById("textInput");
     let textOutput = document.getElementById("textOutput");
@@ -55,14 +56,9 @@ function main() {
             for (let i = 0; i < tokens.length; i++) {
                 let token = tokens[i];
 
-                if (token == ".") {
-                    let n = pop();
-                    write(n.toString() + " ");
-                }
-                else if (token == "+") {
-                    let b = pop();
-                    let a = pop();
-                    push(a + b);
+                let defn = words.get(token);
+                if (defn !== undefined) {
+                    defn();
                 }
                 else {
                     let n = parseInt(token);
@@ -88,6 +84,27 @@ function main() {
             textOutput.scrollTop = textOutput.scrollHeight * 2;
         }
     }
+
+    function define(name, func) {
+        words.set(name, func);
+    }
+
+    define(".", function() {
+        let n = pop();
+        write(n.toString() + " ");
+    });
+
+    define("+", function() {
+        let b = pop();
+        let a = pop();
+        push(a + b);
+    });
+
+    define("*", function() {
+        let b = pop();
+        let a = pop();
+        push(a * b);
+    });
 
     textInput.addEventListener("keydown", onTextInput);
 }
