@@ -5,8 +5,11 @@ function main() {
     const DisplayWidth = 160;
     const DisplayHeight = 120;
 
+    let tokens = [];
+    let tokenIndex = 0;
     let operands = [];
     let words = new Map();
+    let memory = [];
 
     let textInput = document.getElementById("textInput");
     let textOutput = document.getElementById("textOutput");
@@ -31,6 +34,18 @@ function main() {
         }
     }
 
+    function readToken() {
+        if (tokenIndex < tokens.length) {
+            let name = tokens[tokenIndex];
+            tokenIndex += 1;
+            return name;
+        }
+        else {
+            write("-- A name is required. ");
+            return "";
+        }
+    }
+
     function write(text) {
         textOutput.innerHTML += text;
     }
@@ -44,7 +59,8 @@ function main() {
         if (event.key == "Enter") {
             // Parse input:
             let input = textInput.value;
-            let tokens = input.split(/ +/);
+            tokens = input.split(/ +/);
+            tokenIndex = 0;
 
             // String.split() returns a single empty string if the
             // input is empty; remove this invalid token.
@@ -53,8 +69,9 @@ function main() {
             }
 
             // Interpret words:
-            for (let i = 0; i < tokens.length; i++) {
-                let token = tokens[i];
+            while (tokenIndex < tokens.length) {
+                let token = tokens[tokenIndex];
+                tokenIndex += 1;
 
                 let defn = words.get(token);
                 if (defn !== undefined) {
@@ -104,6 +121,15 @@ function main() {
         let b = pop();
         let a = pop();
         push(a * b);
+    });
+
+    define("variable", function() {
+        let name = readToken();
+        let address = memory.length;
+        memory.push(0);
+        define(name, function() { push(memory[address]); });
+        define(name + "&", function() { push(address); });
+        define(name + "!", function() { memory[address] = pop(); });
     });
 
     define("set-pixel", function() {
