@@ -132,6 +132,23 @@ function main() {
         define(name + "!", function() { memory[address] = pop(); });
     });
 
+    define("[", function() {
+        let c = pop();
+        if (c === 0) {
+            // Skip the block:
+            let depth = 1;
+            while (tokenIndex < tokens.length) {
+                let token = tokens[tokenIndex];
+                tokenIndex += 1;
+                if (token === "[") depth += 1;
+                else if (token === "]") depth -= 1;
+                if (depth <= 0) break;
+            }
+        }
+    });
+
+    define("]", function() {});
+
     define("set-pixel", function() {
         let color = pop();
         let y = pop();
