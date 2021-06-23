@@ -20,6 +20,16 @@ function main() {
 
     textInput.focus();
 
+    function peek() {
+        if (operands.length > 0) {
+            return operands[operands.length - 1];
+        }
+        else {
+            write("-- Not enough operands. ");
+            return 0;
+        }
+    }
+
     function push(a) {
         operands.push(a);
     }
@@ -148,6 +158,24 @@ function main() {
     });
 
     define("]", function() {});
+
+    define("dup", function() {
+        push(peek());
+    });
+
+    define("swap", function() {
+        let b = pop();
+        let a = pop();
+        push(b);
+        push(a);
+    });
+
+    define("over", function() {
+        let b = pop();
+        let a = peek();
+        push(b);
+        push(a);
+    });
 
     define("set-pixel", function() {
         let color = pop();
