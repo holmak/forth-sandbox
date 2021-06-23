@@ -106,18 +106,18 @@ function main() {
         words.set(name, func);
     }
 
-    define(".", function() {
+    define("print", function() {
         let n = pop();
         write(n.toString() + " ");
     });
 
-    define("+", function() {
+    define("add", function() {
         let b = pop();
         let a = pop();
         push(a + b);
     });
 
-    define("*", function() {
+    define("mul", function() {
         let b = pop();
         let a = pop();
         push(a * b);
